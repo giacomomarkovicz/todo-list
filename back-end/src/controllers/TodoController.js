@@ -1,12 +1,35 @@
-const express = require("express");
-const authMiddleware = require("../middlewares/auth");
+const Todo = require("../models/Todo");
 
-const router = express.Router();
+module.exports = {
+  async index(req, res) {
+    const todos = await Todo.find();
 
-router.use(authMiddleware);
+    return res.json(todos);
+  },
 
-router.get("/", (req, res) => {
-  res.send({ ok: true });
-});
+  async show(req, res) {
+    const todo = await Todo.findById(req.params.id);
 
-module.exports = app => app.use("/todos", router);
+    return res.json(todo);
+  },
+
+  async store(req, res) {
+    const todo = await Todo.create(req.body);
+
+    return res.json(todo);
+  },
+
+  async update(req, res) {
+    const todo = await Todo.findByIdAndUpdate(req.params.id, req.body, {
+      new: true
+    });
+
+    return res.json(todo);
+  },
+
+  async delete(req, res) {
+    const todo = await Todo.findByIdAndDelete(req.params.id);
+
+    return res.send();
+  }
+};

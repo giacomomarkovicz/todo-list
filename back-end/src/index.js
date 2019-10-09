@@ -6,8 +6,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-require("./controllers/authController")(app);
-require("./controllers/TodoController")(app);
-
+app.use(require("./routes"));
 
 app.listen(3000);
